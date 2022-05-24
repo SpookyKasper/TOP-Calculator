@@ -1,0 +1,28 @@
+* {
+    border: solid 1px red;
+    padding: 20px;
+}
+
+#display {
+    border: solid 2px blue;
+}
+
+#buttonContainer {
+    display: flex;
+}
+
+#symbolsContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+#numContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.numButtons {
+    min-width: 30%;
+    flex-grow: 1;
+}
