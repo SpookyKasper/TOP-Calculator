@@ -1,19 +1,29 @@
-* {
-    border: solid 1px red;
-    padding: 20px;
+body {
+    display: flex;
+    justify-content: center;
+    font-size: x-large;
 }
 
 #display {
     border: solid 2px blue;
+    text-align: end;
+    padding: 20px 30px;
 }
 
 #buttonContainer {
     display: flex;
+    justify-content: center;
+    flex-direction: row-reverse;
 }
 
 #symbolsContainer {
     display: flex;
     flex-direction: column;
+
+}
+
+.oppButtons {
+    padding: 20px;
 }
 
 #numContainer {
