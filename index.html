@@ -26,27 +26,38 @@
                     return div(a, b);
             }
         }
-        
+        // main box
         const calculatorEl = document.createElement('div');
         calculatorEl.setAttribute('id', 'calculator');
         document.body.appendChild(calculatorEl);
-
-        const oppContainer = document.createElement('div');
-        oppContainer.setAttribute('id', 'oppContainer');
-        calculatorEl.appendChild(oppContainer);
-
+        // display box
+        const displayEl = document.createElement('div');
+        displayEl.setAttribute('id', 'display');
+        displayEl.textContent = 782938;
+        calculatorEl.appendChild(displayEl);
+        // buttons box
+        const btnContainer = document.createElement('div');
+        btnContainer.setAttribute('id', 'buttonContainer');
+        calculatorEl.appendChild(btnContainer);
+        // symbols box
+        const symbolsContainer = document.createElement('div');
+        symbolsContainer.setAttribute('id', 'symbolsContainer');
+        btnContainer.appendChild(symbolsContainer);
+        // numbers box
         const numContainer = document.createElement('div');
         numContainer.setAttribute('id', 'numContainer');
-        calculatorEl.appendChild(numContainer);
-
-        const operatorsArray = ['+', '-', '*', '/'];
+        btnContainer.appendChild(numContainer);
+        // operators Array
+        const operatorsArray = ['+', '-', '*', '/', '=', 'C'];
+        // create operator buttons and append to symbols box
         for(e of operatorsArray){
             let oppButton = document.createElement('button');
             oppButton.setAttribute('class', 'oppButtons');
             oppButton.setAttribute('id', `${e}`);
             oppButton.textContent = `${e}`;
-            oppContainer.appendChild(oppButton);
+            symbolsContainer.appendChild(oppButton);
         }
+        // create number buttons and append to numbers box
         for(i = 0; i < 10; i++){
             let numButton = document.createElement('button');
             numButton.setAttribute('class', 'numButtons');
