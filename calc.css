@@ -8,12 +8,17 @@ body {
     border: solid 2px blue;
     text-align: end;
     padding: 20px 30px;
+    min-height: 30px;
 }
 
 #buttonContainer {
     display: flex;
     justify-content: center;
     flex-direction: row-reverse;
+}
+
+button:hover {
+    background-color: aqua;
 }
 
 #symbolsContainer {
