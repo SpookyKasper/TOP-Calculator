@@ -9,6 +9,7 @@
 </head>
 <body>
     <script>
+        // Functions for the operations
         const add = (a, b) => a + b;
         const sub = (a, b) => a - b;
         const mul = (a, b) => a * b;
@@ -26,6 +27,35 @@
             }
         }
         
+        const calculatorEl = document.createElement('div');
+        calculatorEl.setAttribute('id', 'calculator');
+        document.body.appendChild(calculatorEl);
+
+        const oppContainer = document.createElement('div');
+        oppContainer.setAttribute('id', 'oppContainer');
+        calculatorEl.appendChild(oppContainer);
+
+        const numContainer = document.createElement('div');
+        numContainer.setAttribute('id', 'numContainer');
+        calculatorEl.appendChild(numContainer);
+
+        const operatorsArray = ['+', '-', '*', '/'];
+        for(e of operatorsArray){
+            let oppButton = document.createElement('button');
+            oppButton.setAttribute('class', 'oppButtons');
+            oppButton.setAttribute('id', `${e}`);
+            oppButton.textContent = `${e}`;
+            oppContainer.appendChild(oppButton);
+        }
+        for(i = 0; i < 10; i++){
+            let numButton = document.createElement('button');
+            numButton.setAttribute('class', 'numButtons');
+            numButton.setAttribute('id', i);
+            numButton.textContent = i;
+            numContainer.appendChild(numButton);
+        }
+
+
     </script>
 </body>
 </html>
