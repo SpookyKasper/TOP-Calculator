@@ -33,7 +33,6 @@
         // display box
         const displayEl = document.createElement('div');
         displayEl.setAttribute('id', 'display');
-        displayEl.textContent = 782938;
         calculatorEl.appendChild(displayEl);
         // buttons box
         const btnContainer = document.createElement('div');
@@ -65,6 +64,17 @@
             numButton.textContent = i;
             numContainer.appendChild(numButton);
         }
+
+        let displayValue = [];
+
+        let calcButtons = btnContainer.querySelectorAll('button');
+        calcButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                displayValue.push(button.id);
+                displayEl.textContent = displayValue.join('');
+            });
+        });
+
 
 
     </script>
