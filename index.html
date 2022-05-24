@@ -66,11 +66,18 @@
         }
 
         let displayValue = [];
+        let firstNum = [];
+        let operator = [];
+        let secondNum = [];
 
         let calcButtons = btnContainer.querySelectorAll('button');
         calcButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 displayValue.push(button.id);
+                switch(button.id){
+                    case 'C':
+                        displayValue.length = 0;
+                }
                 displayEl.textContent = displayValue.join('');
             });
         });
