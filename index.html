@@ -74,7 +74,7 @@
         let displayValue = [];
         let firstNum = 0;
         let operator = [];
-        let secondNum = [];
+        let secondNum = 0;
 
         let calcButtons = btnContainer.querySelectorAll('button');
         calcButtons.forEach(button => {
@@ -83,17 +83,20 @@
                     case 'C':
                         displayValue.length = 0;
                         break;
-                        case '=':
-                            console.log('operate this baby');
-                            break;
-                            default:
-                                displayValue.push(button.id);
-                                
-                            }
+                    case '=':
+                        let oppIndex = displayValue.indexOf(operator[0]);
+                        secondNum = displayValue.slice(oppIndex + 1).join('');
+                        console.log(firstNum);
+                        console.log(operator[0]);
+                        console.log(secondNum);
+                        break;
+                    default:
+                        displayValue.push(button.id);   
+                    }
                 if (button.classList.contains('operators')) {
+                    operator.push(button.id);
                     let oppIndex = displayValue.indexOf(button.id);
                     firstNum = displayValue.slice(0, oppIndex).join('');
-                    console.log(firstNum);
                 }
                 displayEl.textContent = displayValue.join('');
             });
