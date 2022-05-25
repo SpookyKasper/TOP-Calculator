@@ -75,12 +75,21 @@
         let firstNum = 0;
         let operator = [];
         let secondNum = 0;
+        let operatorCount = 0;
 
         function clear(){
             displayValue.length = 0;
             firstNum = 0;
             operator.length = 0;
             secondNum = 0;
+        }
+
+        function equal(){
+            let oppIndex = displayValue.indexOf(operator[0]);
+            secondNum = displayValue.slice(oppIndex + 1).join('');
+            let result = operate(operator[0], +firstNum, +secondNum);
+            clear();
+            displayValue.push(result);
         }
 
         let calcButtons = btnContainer.querySelectorAll('button');
@@ -91,19 +100,26 @@
                         clear();
                         break;
                     case '=':
-                        let oppIndex = displayValue.indexOf(operator[0]);
-                        secondNum = displayValue.slice(oppIndex + 1).join('');
-                        let result = operate(operator[0], +firstNum, +secondNum);
-                        clear();
-                        displayValue.push(result);
+                        equal();
                         break;
                     default:
                         displayValue.push(button.id);   
                     }
                 if (button.classList.contains('operators')) {
+                    operatorCount++;
+                    if(operatorCount > 1){
+                        let oppIndex = displayValue.indexOf(operator[0]);
+                        firstNum = displayValue.slice(0, oppIndex).join('');
+                        secondNum = displayValue.slice(oppIndex + 1, displayValue.length - 1).join('');
+                        let result = operate(operator[0], +firstNum, +secondNum);
+                        clear();
+                        displayValue.push(result);
+                        displayValue.push(button.id);
+                    }
                     operator.push(button.id);
                     let oppIndex = displayValue.indexOf(button.id);
                     firstNum = displayValue.slice(0, oppIndex).join('');
+                    
                 }
                 displayEl.textContent = displayValue.join('');
             });
