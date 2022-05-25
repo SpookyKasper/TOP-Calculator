@@ -70,13 +70,18 @@
             numButton.textContent = i;
             numContainer.appendChild(numButton);
         }
-
+        let decimalButton = document.createElement('button');
+        decimalButton.setAttribute('class', 'numButtons decimal');
+        decimalButton.setAttribute('id', '.');
+        decimalButton.textContent = '.';
+        numContainer.appendChild(decimalButton);
+        // Declare useful variables with initial values
         let displayValue = [];
         let firstNum = 0;
         let operator = [];
         let secondNum = 0;
         let operatorCount = 0;
-
+        // function that resets variables
         function clear(){
             displayValue.length = 0;
             firstNum = 0;
@@ -84,7 +89,7 @@
             secondNum = 0;
             operatorCount = 0;
         }
-
+        // function that returns the result of displayed operation
         function equal(){
             let oppIndex = displayValue.indexOf(operator[0]);
             if (oppIndex === -1){
@@ -96,8 +101,9 @@
             clear();
             displayValue.push(result);
         }
-
+        // Get all buttons
         let calcButtons = btnContainer.querySelectorAll('button');
+        // Add a click event listener for each button
         calcButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 switch(button.id){
@@ -108,7 +114,14 @@
                         equal();
                         break;
                     default:
-                        displayValue.push(button.id);   
+                        if(displayValue[0] === 0){
+                            displayValue.length = 0;
+                        }
+                        if (button.id === '.' && displayValue.indexOf('.') !== -1){
+                            return;
+                        } else {
+                            displayValue.push(button.id);   
+                        }
                     }
                 if (button.classList.contains('operators')) {
                     operatorCount++;
