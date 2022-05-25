@@ -46,16 +46,22 @@
         const numContainer = document.createElement('div');
         numContainer.setAttribute('id', 'numContainer');
         btnContainer.appendChild(numContainer);
-        // operators Array
-        const operatorsArray = ['+', '-', '*', '/', '=', 'C'];
+        // symbols Array
+        const symbolsArray = ['+', '-', '*', '/', '=', 'C'];
         // create operator buttons and append to symbols box
-        for(e of operatorsArray){
-            let oppButton = document.createElement('button');
-            oppButton.setAttribute('class', 'oppButtons');
-            oppButton.setAttribute('id', `${e}`);
-            oppButton.textContent = `${e}`;
-            symbolsContainer.appendChild(oppButton);
+        for(e of symbolsArray){
+            let symbolButton = document.createElement('button');
+            symbolButton.setAttribute('class', 'symbolButtons');
+            symbolButton.setAttribute('id', `${e}`);
+            symbolButton.textContent = `${e}`;
+            symbolsContainer.appendChild(symbolButton);
         }
+        let symbols = symbolsContainer.querySelectorAll('.symbolButtons')
+        symbols.forEach(symbol => {
+            if(symbol.id !== '=' && symbol.id !== 'C'){
+                symbol.classList.add('operators')
+            }
+        });
         // create number buttons and append to numbers box
         for(i = 0; i < 10; i++){
             let numButton = document.createElement('button');
@@ -66,17 +72,28 @@
         }
 
         let displayValue = [];
-        let firstNum = [];
+        let firstNum = 0;
         let operator = [];
         let secondNum = [];
 
         let calcButtons = btnContainer.querySelectorAll('button');
         calcButtons.forEach(button => {
             button.addEventListener('click', (e) => {
-                displayValue.push(button.id);
                 switch(button.id){
                     case 'C':
                         displayValue.length = 0;
+                        break;
+                        case '=':
+                            console.log('operate this baby');
+                            break;
+                            default:
+                                displayValue.push(button.id);
+                                
+                            }
+                if (button.classList.contains('operators')) {
+                    let oppIndex = displayValue.indexOf(button.id);
+                    firstNum = displayValue.slice(0, oppIndex).join('');
+                    console.log(firstNum);
                 }
                 displayEl.textContent = displayValue.join('');
             });
