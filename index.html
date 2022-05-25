@@ -86,9 +86,9 @@
                     case '=':
                         let oppIndex = displayValue.indexOf(operator[0]);
                         secondNum = displayValue.slice(oppIndex + 1).join('');
-                        console.log(firstNum);
-                        console.log(operator[0]);
-                        console.log(secondNum);
+                        let result = operate(operator[0], +firstNum, +secondNum);
+                        displayValue.length = 0;
+                        displayValue.push(result);
                         break;
                     default:
                         displayValue.push(button.id);   
