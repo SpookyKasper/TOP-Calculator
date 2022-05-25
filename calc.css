@@ -1,7 +1,9 @@
 body {
     display: flex;
     justify-content: center;
+    align-items: center;
     font-size: x-large;
+    height: 100vh;
 }
 
 #display {
@@ -17,8 +19,13 @@ body {
     flex-direction: row-reverse;
 }
 
-button:hover {
+.symbolButtons:hover {
     background-color: aqua;
+}
+
+.numButtons:hover {
+    background-color: blueviolet;
+    color: white;
 }
 
 #symbolsContainer {
@@ -27,8 +34,9 @@ button:hover {
 
 }
 
-.oppButtons {
+.symbolButtons {
     padding: 20px;
+    background-color: bisque;
 }
 
 #numContainer {
@@ -40,4 +48,9 @@ button:hover {
 .numButtons {
     min-width: 30%;
     flex-grow: 1;
+}
+
+.decimal{
+    font-size: xx-large;
+    font-weight: 900;
 }
