@@ -87,6 +87,9 @@
 
         function equal(){
             let oppIndex = displayValue.indexOf(operator[0]);
+            if (oppIndex === -1){
+                return
+            }
             firstNum = displayValue.slice(0, oppIndex).join('');
             secondNum = displayValue.slice(oppIndex + 1).join('');
             let result = Math.round(operate(operator[0], +firstNum, +secondNum) * 10000) / 10000;
@@ -124,6 +127,7 @@
                     firstNum = displayValue.slice(0, oppIndex).join('');
                     
                 }
+                console.log(displayValue);
                 displayEl.textContent = displayValue.join('');
             });
         });
