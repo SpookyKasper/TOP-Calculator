@@ -76,18 +76,25 @@
         let operator = [];
         let secondNum = 0;
 
+        function clear(){
+            displayValue.length = 0;
+            firstNum = 0;
+            operator.length = 0;
+            secondNum = 0;
+        }
+
         let calcButtons = btnContainer.querySelectorAll('button');
         calcButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 switch(button.id){
                     case 'C':
-                        displayValue.length = 0;
+                        clear();
                         break;
                     case '=':
                         let oppIndex = displayValue.indexOf(operator[0]);
                         secondNum = displayValue.slice(oppIndex + 1).join('');
                         let result = operate(operator[0], +firstNum, +secondNum);
-                        displayValue.length = 0;
+                        clear();
                         displayValue.push(result);
                         break;
                     default:
