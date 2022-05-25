@@ -89,7 +89,7 @@
             let oppIndex = displayValue.indexOf(operator[0]);
             firstNum = displayValue.slice(0, oppIndex).join('');
             secondNum = displayValue.slice(oppIndex + 1).join('');
-            let result = operate(operator[0], +firstNum, +secondNum);
+            let result = Math.round(operate(operator[0], +firstNum, +secondNum) * 10000) / 10000;
             clear();
             displayValue.push(result);
         }
@@ -113,10 +113,10 @@
                         let oppIndex = displayValue.indexOf(operator[0]);
                         firstNum = displayValue.slice(0, oppIndex).join('');
                         secondNum = displayValue.slice(oppIndex + 1, displayValue.length - 1).join('');
-                        let result = operate(operator[0], +firstNum, +secondNum);
+                        let result = Math.round(operate(operator[0], +firstNum, +secondNum) * 10000) / 10000;
                         clear();
-                        operatorCount = 1;
                         displayValue.push(result);
+                        operatorCount = 1;
                         displayValue.push(button.id);
                     }
                     operator.push(button.id);
