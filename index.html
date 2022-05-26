@@ -77,16 +77,16 @@
         numContainer.appendChild(decimalButton);
         // Declare useful variables with initial values
         let displayValue = [];
-        let firstNum = 0;
+        let firstNum = null;
         let operator = [];
-        let secondNum = 0;
+        let secondNum = null;
         let operatorCount = 0;
         // function that resets variables
         function clear(){
             displayValue.length = 0;
-            firstNum = 0;
+            firstNum = null;
             operator.length = 0;
-            secondNum = 0;
+            secondNum = null;
             operatorCount = 0;
         }
         // function that returns the result of displayed operation
@@ -117,12 +117,20 @@
                         if(displayValue[0] === 0){
                             displayValue.length = 0;
                         }
-                        if (button.id === '.' && displayValue.indexOf('.') !== -1){
+                        if (button.id === '.' && firstNum === null && displayValue.includes('.') || 
+                            button.id === '.' && firstNum === null && displayValue.length !== 0 && displayValue[0].toString().includes('.') ||
+                            button.id === '.' && firstNum !== null && displayValue.slice(2).includes('.')) {
                             return;
+                        // if (button.id === '.' && displayValue.includes('.') && firstNum === 0) {
+                        //     return;
+                        // } else if (button.id === '.' && firstNum !== 0 && displayValue.slice(firstNum.length).includes('.')) {
+                        //     return; 
+                        // } else if (button.id === '.' && displayValue.length !== 0 && displayValue[0].toString().includes('.') && firstNum === 0) {
+                        //     return;
                         } else {
-                            displayValue.push(button.id);   
-                        }
-                    }
+                            displayValue.push(button.id);
+                        }   
+                }
                 if (button.classList.contains('operators')) {
                     operatorCount++;
                     if(operatorCount > 1){
