@@ -63,13 +63,18 @@
             }
         });
         // create number buttons and append to numbers box
-        for(i = 0; i < 10; i++){
+        for(i = 1; i < 10; i++){
             let numButton = document.createElement('button');
             numButton.setAttribute('class', 'numButtons');
             numButton.setAttribute('id', i);
             numButton.textContent = i;
             numContainer.appendChild(numButton);
         }
+        let zeroButton = document.createElement('button');
+        zeroButton.setAttribute('class', 'numButtons');
+        zeroButton.setAttribute('id', '0');
+        zeroButton.textContent = '0';
+        numContainer.appendChild(zeroButton);
         let decimalButton = document.createElement('button');
         decimalButton.setAttribute('class', 'numButtons decimal');
         decimalButton.setAttribute('id', '.');
@@ -121,12 +126,6 @@
                             button.id === '.' && firstNum === null && displayValue.length !== 0 && displayValue[0].toString().includes('.') ||
                             button.id === '.' && firstNum !== null && displayValue.slice(2).includes('.')) {
                             return;
-                        // if (button.id === '.' && displayValue.includes('.') && firstNum === 0) {
-                        //     return;
-                        // } else if (button.id === '.' && firstNum !== 0 && displayValue.slice(firstNum.length).includes('.')) {
-                        //     return; 
-                        // } else if (button.id === '.' && displayValue.length !== 0 && displayValue[0].toString().includes('.') && firstNum === 0) {
-                        //     return;
                         } else {
                             displayValue.push(button.id);
                         }   
