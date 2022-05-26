@@ -47,7 +47,7 @@
         numContainer.setAttribute('id', 'numContainer');
         btnContainer.appendChild(numContainer);
         // symbols Array
-        const symbolsArray = ['+', '-', '*', '/', '=', 'C'];
+        const symbolsArray = ['+', '-', '*', '/', '=', 'C', '<'];
         // create operator buttons and append to symbols box
         for(e of symbolsArray){
             let symbolButton = document.createElement('button');
@@ -118,6 +118,10 @@
                     case '=':
                         equal();
                         break;
+                    case '<':
+                        console.log(displayValue.length)
+                        displayValue = displayValue.slice(0, displayValue.length - 1);
+                        break;
                     default:
                         if(displayValue[0] === 0){
                             displayValue.length = 0;
@@ -130,7 +134,7 @@
                             displayValue.push(button.id);
                         }   
                 }
-                if (button.classList.contains('operators')) {
+                if (button.classList.contains('operators') && button.id !== '<') {
                     operatorCount++;
                     if(operatorCount > 1){
                         let oppIndex = displayValue.indexOf(operator[0]);
@@ -147,7 +151,7 @@
                     firstNum = displayValue.slice(0, oppIndex).join('');
                     
                 }
-                console.log(displayValue);
+                // console.log(displayValue);
                 displayEl.textContent = displayValue.join('');
             });
         });
