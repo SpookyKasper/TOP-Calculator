@@ -1,8 +1,13 @@
+#calculator {
+    width: 50vh;
+    display: flex;
+    flex-direction: column;
+}
 body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: xx-large;
+    font-size: 50px;
     height: 100vh;
 }
 
@@ -12,13 +17,14 @@ body {
     border-radius: 3px;
     text-align: end;
     padding: 20px 30px;
-    min-height: 40px;
+    min-height: 60px;
 }
 
 #buttonContainer {
     display: flex;
     justify-content: center;
     flex-direction: row-reverse;
+    flex-grow: 1;
 }
 
 .symbolButtons:hover {
@@ -31,23 +37,27 @@ body {
 
 #symbolsContainer {
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
     flex-wrap: wrap;
-    
 }
 
 .symbolButtons {
     padding: 20px;
     background-color: bisque;
+    border-radius: 2px;
+    font-size: xx-large;
 }
 
 #numContainer {
     display: flex;
     flex-wrap: wrap;
+    flex-grow: 2;
     justify-content: center;
 }
 
 .numButtons {
+    font-size: x-large;
     min-width: 30%;
     flex-grow: 1;
 }
