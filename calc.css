@@ -2,15 +2,17 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: x-large;
+    font-size: xx-large;
     height: 100vh;
 }
 
 #display {
-    border: solid 2px blue;
+    /* background-color: darkcyan; */
+    /* color: aliceblue; */
+    border-radius: 3px;
     text-align: end;
     padding: 20px 30px;
-    min-height: 30px;
+    min-height: 40px;
 }
 
 #buttonContainer {
@@ -20,18 +22,18 @@ body {
 }
 
 .symbolButtons:hover {
-    background-color: aqua;
+    background-color: orange;
 }
 
 .numButtons:hover {
-    background-color: blueviolet;
-    color: white;
+    background-color: beige;
 }
 
 #symbolsContainer {
     display: flex;
     flex-direction: column;
-
+    flex-wrap: wrap;
+    
 }
 
 .symbolButtons {
