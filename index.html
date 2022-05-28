@@ -86,6 +86,7 @@
         let operator = [];
         let secondNum = null;
         let operatorCount = 0;
+        let firstOpDone = false;
         // function that resets variables
         function clear(){
             displayValue.length = 0;
@@ -93,9 +94,11 @@
             operator.length = 0;
             secondNum = null;
             operatorCount = 0;
+            firstOpDone = false;
         }
         // function that returns the result of displayed operation
         function equal(){
+            console.log(operator);
             let oppIndex = displayValue.indexOf(operator[0]);
             if (oppIndex === -1){
                 return
@@ -104,6 +107,7 @@
             secondNum = displayValue.slice(oppIndex + 1).join('');
             let result = Math.round(operate(operator[0], +firstNum, +secondNum) * 10000) / 10000;
             clear();
+            firstOpDone = true;
             displayValue.push(result);
         }
         // Get all buttons
@@ -119,20 +123,36 @@
                         equal();
                         break;
                     case '<':
-                        console.log(displayValue.length)
-                        displayValue = displayValue.slice(0, displayValue.length - 1);
+                        if (displayValue.length === 1 && displayValue[0] !== 0){
+                            console.log('case');
+                            let num = displayValue[0].toString();
+                            clear();
+                            displayValue.push(Number(num.slice(0, -1)));
+                            break;
+                        } else {
+                            let value = displayValue.slice(0, displayValue.length - 1);
+                            clear();
+                            displayValue = value;
+                        }
                         break;
+                    case '.':
+                        console.log(firstNum);
+                        console.log(displayValue);
+                        let index = displayValue.indexOf(operator[0]);
+                        console.log(index);
+                        if (firstNum === null && displayValue.includes('.') || 
+                            firstNum === null && displayValue.length !== 0 && displayValue[0].toString().includes('.') ||
+                            firstNum !== null && displayValue.slice(index).includes('.')) {
+                                return;
+                        } else {
+                            displayValue.push(button.id)
+                        }
+                        break; 
                     default:
-                        if(displayValue[0] === 0){
+                        if(displayValue[0] == 0 && displayValue.length === 1 && button.id !== '.'){
                             displayValue.length = 0;
                         }
-                        if (button.id === '.' && firstNum === null && displayValue.includes('.') || 
-                            button.id === '.' && firstNum === null && displayValue.length !== 0 && displayValue[0].toString().includes('.') ||
-                            button.id === '.' && firstNum !== null && displayValue.slice(2).includes('.')) {
-                            return;
-                        } else {
-                            displayValue.push(button.id);
-                        }   
+                       displayValue.push(button.id);   
                 }
                 if (button.classList.contains('operators') && button.id !== '<') {
                     operatorCount++;
@@ -144,6 +164,7 @@
                         clear();
                         displayValue.push(result);
                         operatorCount = 1;
+                        firstOpDone = true;
                         displayValue.push(button.id);
                     }
                     operator.push(button.id);
@@ -151,7 +172,7 @@
                     firstNum = displayValue.slice(0, oppIndex).join('');
                     
                 }
-                // console.log(displayValue);
+                console.log(displayValue);
                 displayEl.textContent = displayValue.join('');
             });
         });
