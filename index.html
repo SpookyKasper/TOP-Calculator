@@ -63,7 +63,7 @@
             }
         });
         // create number buttons and append to numbers box
-        for(i = 1; i < 10; i++){
+        for(i = 9; i > 0; i--){
             let numButton = document.createElement('button');
             numButton.setAttribute('class', 'numButtons');
             numButton.setAttribute('id', i);
@@ -71,30 +71,29 @@
             numContainer.appendChild(numButton);
         }
         let zeroButton = document.createElement('button');
-        zeroButton.setAttribute('class', 'numButtons');
+        zeroButton.setAttribute('class', 'numButtons zero');
         zeroButton.setAttribute('id', '0');
         zeroButton.textContent = '0';
-        numContainer.appendChild(zeroButton);
         let decimalButton = document.createElement('button');
         decimalButton.setAttribute('class', 'numButtons decimal');
         decimalButton.setAttribute('id', '.');
         decimalButton.textContent = '.';
+
         numContainer.appendChild(decimalButton);
+        numContainer.appendChild(zeroButton);
+
         // Declare useful variables with initial values
         let displayValue = [];
         let firstNum = null;
         let operator = [];
         let secondNum = null;
-        let operatorCount = 0;
-        let firstOpDone = false;
+
         // function that resets variables
         function clear(){
             displayValue.length = 0;
             firstNum = null;
             operator.length = 0;
             secondNum = null;
-            operatorCount = 0;
-            firstOpDone = false;
         }
         // function that returns the result of displayed operation
         function equal(){
@@ -110,6 +109,30 @@
             firstOpDone = true;
             displayValue.push(result);
         }
+
+        function backspace(){
+            if (displayValue.length === 1 && displayValue[0] !== 0){
+                let num = displayValue[0].toString();
+                clear();
+                displayValue.push(Number(num.slice(0, -1)));
+            } else {
+                let value = displayValue.slice(0, -1);
+                clear();
+                displayValue = value;
+            }
+        };
+
+        function decimal(){
+            let firstOppIndex = displayValue.indexOf(operator[0]);
+            if (firstNum === null && displayValue.includes('.') || 
+                firstNum === null && displayValue.length !== 0 && displayValue[0].toString().includes('.') ||
+                firstNum !== null && displayValue.slice(firstOppIndex).includes('.')) {
+                    return;
+            } else {
+                displayValue.push('.')
+            }
+        }
+
         // Get all buttons
         let calcButtons = btnContainer.querySelectorAll('button');
         // Add a click event listener for each button
@@ -123,30 +146,10 @@
                         equal();
                         break;
                     case '<':
-                        if (displayValue.length === 1 && displayValue[0] !== 0){
-                            console.log('case');
-                            let num = displayValue[0].toString();
-                            clear();
-                            displayValue.push(Number(num.slice(0, -1)));
-                            break;
-                        } else {
-                            let value = displayValue.slice(0, displayValue.length - 1);
-                            clear();
-                            displayValue = value;
-                        }
+                        backspace();
                         break;
                     case '.':
-                        console.log(firstNum);
-                        console.log(displayValue);
-                        let index = displayValue.indexOf(operator[0]);
-                        console.log(index);
-                        if (firstNum === null && displayValue.includes('.') || 
-                            firstNum === null && displayValue.length !== 0 && displayValue[0].toString().includes('.') ||
-                            firstNum !== null && displayValue.slice(index).includes('.')) {
-                                return;
-                        } else {
-                            displayValue.push(button.id)
-                        }
+                        decimal();           
                         break; 
                     default:
                         if(displayValue[0] == 0 && displayValue.length === 1 && button.id !== '.'){
@@ -155,16 +158,14 @@
                        displayValue.push(button.id);   
                 }
                 if (button.classList.contains('operators') && button.id !== '<') {
-                    operatorCount++;
-                    if(operatorCount > 1){
+                    operator.push(button.id);
+                    if(operator.length > 1){
                         let oppIndex = displayValue.indexOf(operator[0]);
                         firstNum = displayValue.slice(0, oppIndex).join('');
                         secondNum = displayValue.slice(oppIndex + 1, displayValue.length - 1).join('');
-                        let result = Math.round(operate(operator[0], +firstNum, +secondNum) * 10000) / 10000;
+                        let result = Math.round((operate(operator[0], +firstNum, +secondNum) + Number.EPSILON) * 1000) / 1000;
                         clear();
                         displayValue.push(result);
-                        operatorCount = 1;
-                        firstOpDone = true;
                         displayValue.push(button.id);
                     }
                     operator.push(button.id);
@@ -176,8 +177,34 @@
                 displayEl.textContent = displayValue.join('');
             });
         });
-
-
+        document.addEventListener('keydown', (e) => {
+            console.log(e.key);
+            switch(e.key){
+                case 'Backspace':
+                    backspace();
+                    break;
+                case '=':
+                    equal();
+                    break;
+                case 'C':
+                    clear();
+                    break;
+                case '.':
+                    decimal();
+                    break;
+            }
+            displayEl.textContent = displayValue.join('');
+            if(isNaN(e.key)){
+                return;
+            } else {
+                if(displayValue[0] == 0 && displayValue.length === 1 && e.key !== '.'){
+                    displayValue.length = 0;
+                }
+                displayValue.push(e.key)
+            }
+            let result = displayValue.join('');
+            displayEl.textContent = result;
+        });
 
     </script>
 </body>
