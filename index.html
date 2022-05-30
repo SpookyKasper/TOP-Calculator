@@ -133,9 +133,25 @@
             }
         }
 
+        function operation(){
+            if(operator.length > 1){
+                let oppIndex = displayValue.indexOf(operator[0]);
+                firstNum = displayValue.slice(0, oppIndex).join('');
+                secondNum = displayValue.slice(oppIndex + 1, displayValue.length - 1).join('');
+                let result = Math.round((operate(operator[0], +firstNum, +secondNum) + Number.EPSILON) * 1000) / 1000;
+                let newOpp = operator[1];
+                clear();
+                displayValue.push(result);
+                displayValue.push(newOpp);
+                operator.push(newOpp);
+            }
+            let oppIndex = displayValue.indexOf(operator[0]);
+            firstNum = displayValue.slice(0, oppIndex).join('');
+        }
+
         // Get all buttons
         let calcButtons = btnContainer.querySelectorAll('button');
-        // Add a click event listener for each button
+        // Add a click functionality for each button
         calcButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 switch(button.id){
@@ -159,26 +175,14 @@
                 }
                 if (button.classList.contains('operators') && button.id !== '<') {
                     operator.push(button.id);
-                    if(operator.length > 1){
-                        let oppIndex = displayValue.indexOf(operator[0]);
-                        firstNum = displayValue.slice(0, oppIndex).join('');
-                        secondNum = displayValue.slice(oppIndex + 1, displayValue.length - 1).join('');
-                        let result = Math.round((operate(operator[0], +firstNum, +secondNum) + Number.EPSILON) * 1000) / 1000;
-                        clear();
-                        displayValue.push(result);
-                        displayValue.push(button.id);
-                    }
-                    operator.push(button.id);
-                    let oppIndex = displayValue.indexOf(button.id);
-                    firstNum = displayValue.slice(0, oppIndex).join('');
-                    
+                    operation();
                 }
                 console.log(displayValue);
                 displayEl.textContent = displayValue.join('');
             });
         });
+        // add keyboard support
         document.addEventListener('keydown', (e) => {
-            console.log(e.key);
             switch(e.key){
                 case 'Backspace':
                     backspace();
@@ -187,11 +191,19 @@
                     equal();
                     break;
                 case 'C':
+                case 'Clear':
                     clear();
                     break;
                 case '.':
                     decimal();
                     break;
+                case '+':
+                case '-':
+                case '*':
+                case '/':
+                    operator.push(e.key);
+                    displayValue.push(e.key);
+                    operation();
             }
             displayEl.textContent = displayValue.join('');
             if(isNaN(e.key)){
