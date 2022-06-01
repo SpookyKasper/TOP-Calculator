@@ -135,7 +135,7 @@
                 operator = null;
             }
         };
-
+        // Defines action for decimal button
         function decimal(){
             let oppIndex = displayValue.indexOf(operator);
             if (operator === null && (displayValue.includes('.') || displayValue[0].toString().includes('.')) ||
@@ -154,6 +154,10 @@
         // Add a click functionality for each button
         calcButtons.forEach(button => {
             button.addEventListener('click', (e) => {
+                button.classList.add('hover');
+                // Deals with 'too' long display value
+                if(displayValue.length > 16 && e.key !== 'C' && e.key !== 'Clear' && e.key !== 'Backspace') return;
+                // Deals with infinity as a display value
                 if(displayIsInfinity){
                     switch(button.id){
                         case 'C':
@@ -163,13 +167,13 @@
                         case '/':
                         case 'enter':
                         case '=':
-                            console.log('tranquilo');
                             displayIsInfinity = false;
                             break;
                         default:
                             return;
                     }
-                }    
+                }
+                // Defines actions of the buttons    
                 switch(button.id){
                     case 'C':
                         clear();
@@ -201,7 +205,6 @@
                         if(displayValue[0] == 0 && displayValue.length === 1 && button.id !== '.'){
                             displayValue.length = 0;
                         }
-                        console.log(button.id);
                         displayValue.push(button.id);   
                 }
                 displayEl.textContent = displayValue.join('');
@@ -213,62 +216,76 @@
                 }
             });
         });
-
-        // add keyboard support
-        document.addEventListener('keydown', (e) => {
-            if(displayValue.length > 16 && e.key !== 'C' && e.key !== 'Clear' && e.key !== 'Backspace'){
-                return;
-            }
-            if(displayValue[0] == 0 && displayValue.length === 1 && e.key !== '.'){
-                displayValue.length = 0;
-            } else if(operator.length == 1 && displayValue[firstNum.length + 1] == 0){
-                console.log(displayValue);
-                displayValue = displayValue.slice(0, -1)
-            }
-            switch(e.key){
-                case 'Backspace':
-                    document.getElementById('<').classList.add('hover');
-                    backspace();
-                    break;
-                case '=':
-                    document.getElementById('=').classList.add('hover');
-                    let result = equal();
-                    clear();
-                    displayValue.push(result
-                    );
-                    break;
-                case 'Enter':
-                    document.getElementById('enter').classList.add('hover');
-                    equal();
-                    break;
-                case 'C':
-                case 'Clear':
-                    document.getElementById('C').classList.add('hover')
-                    clear();
-                    break;
-                case '.':
-                    document.getElementById(e.key).classList.add('hover');
-                    decimal();
-                    break;
-                case '+':
-                case '-':
-                case '*':
-                case '/':
-                    document.getElementById(e.key).classList.add('hover');
-                    operator.push(e.key);
-                    displayValue.push(e.key);
-                    operation();
-                    break;
-                default:
-                    if(isNaN(e.key)){
-                        return;
-                    }
-                    displayValue.push(e.key);
-                    document.getElementById(e.key).classList.add('hover');
-            }
-            let result = displayValue.join('');
-            displayEl.textContent = result;
+        // algo: check cases where e.key is not equal to a button id.
+        document.addEventListener('keydown', e => {
+                console.log(e.key);
+                switch(e.key){
+                    case 'Enter':
+                        document.getElementById('enter').click();
+                        break;
+                    case 'Backspace':
+                        document.getElementById('<').click();
+                        break;
+                    case 'Clear':
+                        document.getElementById('C').click();
+                        break;
+                    default:
+                        document.getElementById(e.key).click();
+                }
         });
+
+        // // add keyboard support
+        // document.addEventListener('keydown', (e) => {
+        //     if(displayValue[0] == 0 && displayValue.length === 1 && e.key !== '.'){
+        //         displayValue.length = 0;
+        //     } else if(operator.length == 1 && displayValue[firstNum.length + 1] == 0){
+        //         console.log(displayValue);
+        //         displayValue = displayValue.slice(0, -1)
+        //     }
+        //     switch(e.key){
+        //         case 'Backspace':
+        //             document.getElementById('<').classList.add('hover');
+        //             backspace();
+        //             break;
+        //         case '=':
+        //             document.getElementById('=').classList.add('hover');
+        //             let result = equal();
+        //             clear();
+        //             displayValue.push(result
+        //             );
+        //             break;
+        //         case 'Enter':
+        //             document.getElementById('enter').classList.add('hover');
+        //             equal();
+        //             break;
+        //         case 'C':
+        //         case 'Clear':
+        //             document.getElementById('C').classList.add('hover')
+        //             clear();
+        //             break;
+        //         case '.':
+        //             document.getElementById(e.key).classList.add('hover');
+        //             decimal();
+        //             break;
+        //         case '+':
+        //         case '-':
+        //         case '*':
+        //         case '/':
+        //             document.getElementById(e.key).classList.add('hover');
+        //             operator.push(e.key);
+        //             displayValue.push(e.key);
+        //             operation();
+        //             break;
+        //         default:
+        //             if(isNaN(e.key)){
+        //                 return;
+        //             }
+        //             displayValue.push(e.key);
+        //             document.getElementById(e.key).classList.add('hover');
+        //     }
+        //     let result = displayValue.join('');
+        //     displayEl.textContent = result;
+        // });
 
     </script>
 </body>
