@@ -9,7 +9,6 @@
 </head>
 <body>
     <script>
-        // Functions for the operations
         const add = (a, b) => a + b;
         const sub = (a, b) => a - b;
         const mul = (a, b) => a * b;
@@ -26,18 +25,17 @@
                     return div(a, b);
             }
         }
-        // main box
-        const calculatorEl = document.createElement('div');
-        calculatorEl.setAttribute('id', 'calculator');
-        document.body.appendChild(calculatorEl);
+        const calculatorBox = document.createElement('div');
+        calculatorBox.setAttribute('id', 'calculator');
+        document.body.appendChild(calculatorBox);
         // display box
         const displayEl = document.createElement('div');
         displayEl.setAttribute('id', 'display');
-        calculatorEl.appendChild(displayEl);
+        calculatorBox.appendChild(displayEl);
         // buttons box 
         const buttonsBox = document.createElement('div');
         buttonsBox.setAttribute('id', 'buttonsBox');
-        calculatorEl.appendChild(buttonsBox);
+        calculatorBox.appendChild(buttonsBox);
         // top buttons box
         const symbolsTopContainer = document.createElement('div');
         symbolsTopContainer.setAttribute('id', 'symbolsTop');
@@ -113,7 +111,6 @@
             operator = null;
             secondNum = null;
         }
-        // Push the result of the display
         function equal(){
             if (operator === null) return;
             let oppIndex = displayValue.indexOf(operator);
@@ -123,7 +120,6 @@
             clear();
             displayValue.push(result);
         }
-        // Erase the last character on the display
         function backspace(){
             if (displayValue.length === 1 && displayValue[0] !== 0){
                 let num = displayValue[0].toString();
@@ -136,10 +132,9 @@
                 operator = null;
             }
         };
-        // Defines action for decimal button
         function decimal(){
             let oppIndex = displayValue.indexOf(operator);
-            if (operator === null && (displayValue.includes('.') || displayValue[0].toString().includes('.')) ||
+            if (displayValue.length > 0 && operator === null && (displayValue.includes('.') || displayValue[0].toString().includes('.')) ||
                 operator !== null && displayValue.slice(oppIndex).includes('.')) {
                 return;
             }
@@ -237,6 +232,7 @@
                     case '*':
                     case '-':
                     case '+':
+                    case '.':
                         document.getElementById(e.key).click();
                     default:
                         if(isNaN(e.key)) return;
