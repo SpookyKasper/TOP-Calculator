@@ -113,7 +113,7 @@
             operator = null;
             secondNum = null;
         }
-        // function that returns the result of displayed operation
+        // returns the result of displayed operation
         function equal(){
             if (operator === null) return;
             let oppIndex = displayValue.indexOf(operator);
@@ -127,7 +127,7 @@
             clear();
             displayValue.push(result);
         }
-
+        // slices the last char on the display
         function backspace(){
             if (displayValue.length === 1 && displayValue[0] !== 0){
                 let num = displayValue[0].toString();
@@ -135,6 +135,9 @@
                 displayValue.push(Number(num.slice(0, -1)));
             } else {
                 displayValue = displayValue.slice(0, -1);
+            }
+            if(!displayValue.includes(operator)){
+                operator = null;
             }
         };
 
