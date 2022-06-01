@@ -34,31 +34,49 @@
         const displayEl = document.createElement('div');
         displayEl.setAttribute('id', 'display');
         calculatorEl.appendChild(displayEl);
-        // buttons box
-        const btnContainer = document.createElement('div');
-        btnContainer.setAttribute('id', 'buttonContainer');
-        calculatorEl.appendChild(btnContainer);
-        // symbols box
+        // buttons box 
+        const buttonsBox = document.createElement('div');
+        buttonsBox.setAttribute('id', 'buttonsBox');
+        calculatorEl.appendChild(buttonsBox);
+        // top buttons box
+        const symbolsTopContainer = document.createElement('div');
+        symbolsTopContainer.setAttribute('id', 'symbolsTop');
+        buttonsBox.appendChild(symbolsTopContainer);
+        // bottom buttons box
+        const botButtons = document.createElement('div');
+        botButtons.setAttribute('id', 'botButtons');
+        buttonsBox.appendChild(botButtons);
+        // symbols box on the right
         const symbolsContainer = document.createElement('div');
         symbolsContainer.setAttribute('id', 'symbolsContainer');
-        btnContainer.appendChild(symbolsContainer);
+        botButtons.appendChild(symbolsContainer);
         // numbers box
         const numContainer = document.createElement('div');
         numContainer.setAttribute('id', 'numContainer');
-        btnContainer.appendChild(numContainer);
+        botButtons.appendChild(numContainer);
         // symbols Array
-        const symbolsArray = ['+', '-', '*', '/', '=', 'C', '<'];
+        const symbolsArray = [ '-', '+', 'enter', '<'];
+        const symbolsArray2 = ['C', '=', '/', '*']
         // create operator buttons and append to symbols box
         for(e of symbolsArray){
             let symbolButton = document.createElement('button');
-            symbolButton.setAttribute('class', 'symbolButtons');
+            symbolButton.setAttribute('class', 'symbolButtons rightButtons');
             symbolButton.setAttribute('id', `${e}`);
             symbolButton.textContent = `${e}`;
             symbolsContainer.appendChild(symbolButton);
         }
-        let symbols = symbolsContainer.querySelectorAll('.symbolButtons')
+
+        for(e of symbolsArray2){
+            let symbolButton = document.createElement('button');
+            symbolButton.setAttribute('class', 'symbolButtons');
+            symbolButton.setAttribute('id', `${e}`);
+            symbolButton.textContent = `${e}`;
+            symbolsTopContainer.appendChild(symbolButton);
+        }
+
+        let symbols = buttonsBox.querySelectorAll('.symbolButtons')
         symbols.forEach(symbol => {
-            if(symbol.id !== '=' && symbol.id !== 'C'){
+            if(symbol.id !== '=' && symbol.id !== 'C' && symbol.id !== '<' && symbol.id !== 'enter'){
                 symbol.classList.add('operators')
             }
         });
@@ -85,28 +103,28 @@
         // Declare useful variables with initial values
         let displayValue = [];
         let firstNum = null;
-        let operator = [];
+        let operator = null;
         let secondNum = null;
 
         // function that resets variables
         function clear(){
             displayValue.length = 0;
             firstNum = null;
-            operator.length = 0;
+            operator = null;
             secondNum = null;
         }
         // function that returns the result of displayed operation
         function equal(){
-            console.log(operator);
-            let oppIndex = displayValue.indexOf(operator[0]);
-            if (oppIndex === -1){
-                return
-            }
+            if (operator === null) return;
+            let oppIndex = displayValue.indexOf(operator);
             firstNum = displayValue.slice(0, oppIndex).join('');
             secondNum = displayValue.slice(oppIndex + 1).join('');
-            let result = Math.round(operate(operator[0], +firstNum, +secondNum) * 10000) / 10000;
+            if(secondNum == 0 && operator[0] === '/'){
+                alert('this calculator have disable division by 0');
+                return;
+            }
+            let result = Math.round((operate(operator[0], +firstNum, +secondNum) + Number.EPSILON) * 1000) / 1000;
             clear();
-            firstOpDone = true;
             displayValue.push(result);
         }
 
@@ -116,41 +134,25 @@
                 clear();
                 displayValue.push(Number(num.slice(0, -1)));
             } else {
-                let value = displayValue.slice(0, -1);
-                clear();
-                displayValue = value;
+                displayValue = displayValue.slice(0, -1);
             }
         };
 
         function decimal(){
-            let firstOppIndex = displayValue.indexOf(operator[0]);
-            if (firstNum === null && displayValue.includes('.') || 
-                firstNum === null && displayValue.length !== 0 && displayValue[0].toString().includes('.') ||
-                firstNum !== null && displayValue.slice(firstOppIndex).includes('.')) {
-                    return;
-            } else {
-                displayValue.push('.')
+            let oppIndex = displayValue.indexOf(operator);
+            if (operator === null && (displayValue.includes('.') || displayValue[0].toString().includes('.')) ||
+                operator !== null && displayValue.slice(oppIndex).includes('.')) {
+                return;
             }
-        }
-
-        function operation(){
-            if(operator.length > 1){
-                let oppIndex = displayValue.indexOf(operator[0]);
-                firstNum = displayValue.slice(0, oppIndex).join('');
-                secondNum = displayValue.slice(oppIndex + 1, displayValue.length - 1).join('');
-                let result = Math.round((operate(operator[0], +firstNum, +secondNum) + Number.EPSILON) * 1000) / 1000;
-                let newOpp = operator[1];
-                clear();
-                displayValue.push(result);
-                displayValue.push(newOpp);
-                operator.push(newOpp);
-            }
-            let oppIndex = displayValue.indexOf(operator[0]);
-            firstNum = displayValue.slice(0, oppIndex).join('');
+            displayValue.push('.')
         }
 
         // Get all buttons
-        let calcButtons = btnContainer.querySelectorAll('button');
+        let calcButtons = buttonsBox.querySelectorAll('button');
+        // Remove Hover after transition end
+        let removeHover = e => e.target.classList.remove('hover');
+        calcButtons.forEach(button => button.addEventListener('transitionend', removeHover));
+
         // Add a click functionality for each button
         calcButtons.forEach(button => {
             button.addEventListener('click', (e) => {
@@ -159,6 +161,7 @@
                         clear();
                         break;
                     case '=':
+                    case 'enter':
                         equal();
                         break;
                     case '<':
@@ -166,53 +169,83 @@
                         break;
                     case '.':
                         decimal();           
-                        break; 
+                        break;
+                    case '+':
+                    case '-':
+                    case '*':
+                    case '/':
+                        // algo: when I click an operator, if operator is null, define the operator and push it to the display.
+                        // Otherwise give the result of the display, redefine the operator and push it to the display
+                        if(operator === null){
+                            operator = button.id;
+                            displayValue.push(operator);
+                        } else {
+                            equal();
+                            operator = button.id;
+                            displayValue.push(operator);
+                        }
+                        break;
                     default:
                         if(displayValue[0] == 0 && displayValue.length === 1 && button.id !== '.'){
                             displayValue.length = 0;
                         }
-                       displayValue.push(button.id);   
+                        console.log(button.id);
+                        displayValue.push(button.id);   
                 }
-                if (button.classList.contains('operators') && button.id !== '<') {
-                    operator.push(button.id);
-                    operation();
-                }
-                console.log(displayValue);
                 displayEl.textContent = displayValue.join('');
             });
         });
         // add keyboard support
         document.addEventListener('keydown', (e) => {
+            if(displayValue.length > 16 && e.key !== 'C' && e.key !== 'Clear' && e.key !== 'Backspace'){
+                return;
+            }
+            if(displayValue[0] == 0 && displayValue.length === 1 && e.key !== '.'){
+                displayValue.length = 0;
+            } else if(operator.length == 1 && displayValue[firstNum.length + 1] == 0){
+                console.log(displayValue);
+                displayValue = displayValue.slice(0, -1)
+            }
             switch(e.key){
                 case 'Backspace':
+                    document.getElementById('<').classList.add('hover');
                     backspace();
                     break;
                 case '=':
+                    document.getElementById('=').classList.add('hover');
+                    let result = equal();
+                    clear();
+                    displayValue.push(result
+                    );
+                    break;
+                case 'Enter':
+                    document.getElementById('enter').classList.add('hover');
                     equal();
                     break;
                 case 'C':
                 case 'Clear':
+                    document.getElementById('C').classList.add('hover')
                     clear();
                     break;
                 case '.':
+                    document.getElementById(e.key).classList.add('hover');
                     decimal();
                     break;
                 case '+':
                 case '-':
                 case '*':
                 case '/':
+                    document.getElementById(e.key).classList.add('hover');
                     operator.push(e.key);
                     displayValue.push(e.key);
                     operation();
-            }
-            displayEl.textContent = displayValue.join('');
-            if(isNaN(e.key)){
-                return;
-            } else {
-                if(displayValue[0] == 0 && displayValue.length === 1 && e.key !== '.'){
-                    displayValue.length = 0;
-                }
-                displayValue.push(e.key)
+                    break;
+                default:
+                    if(isNaN(e.key)){
+                        return;
+                    }
+                    displayValue.push(e.key);
+                    document.getElementById(e.key).classList.add('hover');
             }
             let result = displayValue.join('');
             displayEl.textContent = result;
