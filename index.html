@@ -74,12 +74,6 @@
             symbolsTopContainer.appendChild(symbolButton);
         }
 
-        let symbols = buttonsBox.querySelectorAll('.symbolButtons')
-        symbols.forEach(symbol => {
-            if(symbol.id !== '=' && symbol.id !== 'C' && symbol.id !== '<' && symbol.id !== 'enter'){
-                symbol.classList.add('operators')
-            }
-        });
         // create number buttons and append to numbers box
         for(i = 9; i > 0; i--){
             let numButton = document.createElement('button');
@@ -105,29 +99,30 @@
         let firstNum = null;
         let operator = null;
         let secondNum = null;
+        let displayIsInfinity = false;
+        let nanMessage = "Woh woh woh! You'r probably trying to multiply Infinity by 0 or divide 0 by 0... " + 
+                         "Those operations are not supported by this calculator!" + "\n" + 
+                         "I will clear the display and you can keep going ;) " + "\n" + 
+                         "Thanks for your understanding :)"
 
-        // function that resets variables
+        // Reset variables
         function clear(){
             displayValue.length = 0;
             firstNum = null;
             operator = null;
             secondNum = null;
         }
-        // returns the result of displayed operation
+        // Push the result of the display
         function equal(){
             if (operator === null) return;
             let oppIndex = displayValue.indexOf(operator);
             firstNum = displayValue.slice(0, oppIndex).join('');
             secondNum = displayValue.slice(oppIndex + 1).join('');
-            if(secondNum == 0 && operator[0] === '/'){
-                alert('this calculator have disable division by 0');
-                return;
-            }
             let result = Math.round((operate(operator[0], +firstNum, +secondNum) + Number.EPSILON) * 1000) / 1000;
             clear();
             displayValue.push(result);
         }
-        // slices the last char on the display
+        // Erase the last character on the display
         function backspace(){
             if (displayValue.length === 1 && displayValue[0] !== 0){
                 let num = displayValue[0].toString();
@@ -159,6 +154,22 @@
         // Add a click functionality for each button
         calcButtons.forEach(button => {
             button.addEventListener('click', (e) => {
+                if(displayIsInfinity){
+                    switch(button.id){
+                        case 'C':
+                        case '+':
+                        case '-':
+                        case '*':
+                        case '/':
+                        case 'enter':
+                        case '=':
+                            console.log('tranquilo');
+                            displayIsInfinity = false;
+                            break;
+                        default:
+                            return;
+                    }
+                }    
                 switch(button.id){
                     case 'C':
                         clear();
@@ -167,18 +178,10 @@
                     case 'enter':
                         equal();
                         break;
-                    case '<':
-                        backspace();
-                        break;
-                    case '.':
-                        decimal();           
-                        break;
                     case '+':
                     case '-':
                     case '*':
                     case '/':
-                        // algo: when I click an operator, if operator is null, define the operator and push it to the display.
-                        // Otherwise give the result of the display, redefine the operator and push it to the display
                         if(operator === null){
                             operator = button.id;
                             displayValue.push(operator);
@@ -187,6 +190,12 @@
                             operator = button.id;
                             displayValue.push(operator);
                         }
+                        break;    
+                    case '<':
+                        backspace();
+                        break;
+                    case '.':
+                        decimal();           
                         break;
                     default:
                         if(displayValue[0] == 0 && displayValue.length === 1 && button.id !== '.'){
@@ -196,8 +205,15 @@
                         displayValue.push(button.id);   
                 }
                 displayEl.textContent = displayValue.join('');
+                if(displayValue[0] === Infinity && displayValue.length === 1) displayIsInfinity = true;
+                if(displayEl.textContent.includes('NaN')) {
+                    alert(nanMessage);
+                    clear();
+                    displayEl.textContent = '';
+                }
             });
         });
+
         // add keyboard support
         document.addEventListener('keydown', (e) => {
             if(displayValue.length > 16 && e.key !== 'C' && e.key !== 'Clear' && e.key !== 'Backspace'){
