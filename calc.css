@@ -1,28 +1,39 @@
+/* * {border: solid red;} */
+
 #calculator {
     width: 50vh;
     display: flex;
     flex-direction: column;
 }
+
 body {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 50px;
+    font-size: 55px;
     height: 100vh;
+}
+
+button {
+    transition: 0.09s;
 }
 
 #display {
     border-radius: 3px;
     text-align: end;
-    padding: 20px 30px;
-    min-height: 60px;
+    padding: 10px;
+    min-height: 80px;
 }
 
-#buttonContainer {
+#symbolsTop {
+    display: flex;
+}
+
+#botButtons {
     display: flex;
     justify-content: center;
     flex-direction: row-reverse;
-    flex-grow: 1;
+    flex-grow:51;
 }
 
 .symbolButtons:hover {
@@ -31,6 +42,11 @@ body {
 
 .numButtons:hover {
     background-color: white;
+}
+
+.hover {
+    transform: scale(1.1);
+    color: white;
 }
 
 #symbolsContainer {
@@ -42,22 +58,29 @@ body {
 
 .symbolButtons {
     padding: 20px;
+    width: 20px;
     background-color: bisque;
-    border-radius: 2px;
     font-size: xx-large;
+    flex-grow: 1;
+}
+
+.rightButtons {
+    width: 100%;
+    height: 25%;
 }
 
 #numContainer {
     display: flex;
     flex-wrap: wrap;
-    flex-grow: 2;
     justify-content: center;
     flex-direction: row-reverse;
+    width: 75%;
 }
 
 .numButtons {
     font-size: x-large;
     min-width: 30%;
+    height: 25%;
     flex-grow: 1;
 }
 
