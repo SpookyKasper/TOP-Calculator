@@ -103,7 +103,8 @@
         let nanMessage = "Woh woh woh! You'r probably trying to multiply Infinity by 0 or divide 0 by 0... " + 
                          "Those operations are not supported by this calculator!" + "\n" + 
                          "I will clear the display and you can keep going ;) " + "\n" + 
-                         "Thanks for your understanding :)"
+                         "Thanks for your understanding :)";
+        let tooLongMessage = "Hey, I understand your enthusiasm but try to keep it under 18 characters hehe ;) ";
 
         // Reset variables
         function clear(){
@@ -156,7 +157,10 @@
             button.addEventListener('click', (e) => {
                 button.classList.add('hover');
                 // Deals with 'too' long display value
-                if(displayValue.length > 16 && e.key !== 'C' && e.key !== 'Clear' && e.key !== 'Backspace') return;
+                if(displayEl.textContent.length > 16 && button.id !== 'C' && button.id !== '<') {
+                    alert(tooLongMessage);
+                    return;
+                }
                 // Deals with infinity as a display value
                 if(displayIsInfinity){
                     switch(button.id){
@@ -216,9 +220,8 @@
                 }
             });
         });
-        // algo: check cases where e.key is not equal to a button id.
+        // Add keyboard support
         document.addEventListener('keydown', e => {
-                console.log(e.key);
                 switch(e.key){
                     case 'Enter':
                         document.getElementById('enter').click();
@@ -229,63 +232,17 @@
                     case 'Clear':
                         document.getElementById('C').click();
                         break;
+                    case '=':
+                    case '/':
+                    case '*':
+                    case '-':
+                    case '+':
+                        document.getElementById(e.key).click();
                     default:
+                        if(isNaN(e.key)) return;
                         document.getElementById(e.key).click();
                 }
         });
-
-        // // add keyboard support
-        // document.addEventListener('keydown', (e) => {
-        //     if(displayValue[0] == 0 && displayValue.length === 1 && e.key !== '.'){
-        //         displayValue.length = 0;
-        //     } else if(operator.length == 1 && displayValue[firstNum.length + 1] == 0){
-        //         console.log(displayValue);
-        //         displayValue = displayValue.slice(0, -1)
-        //     }
-        //     switch(e.key){
-        //         case 'Backspace':
-        //             document.getElementById('<').classList.add('hover');
-        //             backspace();
-        //             break;
-        //         case '=':
-        //             document.getElementById('=').classList.add('hover');
-        //             let result = equal();
-        //             clear();
-        //             displayValue.push(result
-        //             );
-        //             break;
-        //         case 'Enter':
-        //             document.getElementById('enter').classList.add('hover');
-        //             equal();
-        //             break;
-        //         case 'C':
-        //         case 'Clear':
-        //             document.getElementById('C').classList.add('hover')
-        //             clear();
-        //             break;
-        //         case '.':
-        //             document.getElementById(e.key).classList.add('hover');
-        //             decimal();
-        //             break;
-        //         case '+':
-        //         case '-':
-        //         case '*':
-        //         case '/':
-        //             document.getElementById(e.key).classList.add('hover');
-        //             operator.push(e.key);
-        //             displayValue.push(e.key);
-        //             operation();
-        //             break;
-        //         default:
-        //             if(isNaN(e.key)){
-        //                 return;
-        //             }
-        //             displayValue.push(e.key);
-        //             document.getElementById(e.key).classList.add('hover');
-        //     }
-        //     let result = displayValue.join('');
-        //     displayEl.textContent = result;
-        // });
 
     </script>
 </body>
