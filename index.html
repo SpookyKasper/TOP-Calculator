@@ -6,140 +6,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TOP calculator</title>
     <link rel="stylesheet" href="calc.css">
+    <script src="calc.js"></script>
 </head>
 <body>
     <script>
-        const add = (a, b) => a + b;
-        const sub = (a, b) => a - b;
-        const mul = (a, b) => a * b;
-        const div = (a, b) => a / b;
-        const operate = (opp, a, b) => {
-            switch(opp){
-                case '+':
-                    return add(a, b);
-                case '-':
-                    return sub(a, b);
-                case '*':
-                    return mul(a, b);
-                case '/':
-                    return div(a, b);
-            }
-        }
+        // Boxes Creation
         const calculatorBox = document.createElement('div');
         calculatorBox.setAttribute('id', 'calculator');
         document.body.appendChild(calculatorBox);
-        // display box
-        const displayEl = document.createElement('div');
-        displayEl.setAttribute('id', 'display');
-        calculatorBox.appendChild(displayEl);
-        // buttons box 
+
+        const displayBox = document.createElement('div');
+        displayBox.setAttribute('id', 'display');
+        calculatorBox.appendChild(displayBox);
+
         const buttonsBox = document.createElement('div');
         buttonsBox.setAttribute('id', 'buttonsBox');
         calculatorBox.appendChild(buttonsBox);
-        // top buttons box
-        const symbolsTopContainer = document.createElement('div');
-        symbolsTopContainer.setAttribute('id', 'symbolsTop');
-        buttonsBox.appendChild(symbolsTopContainer);
-        // bottom buttons box
-        const botButtons = document.createElement('div');
-        botButtons.setAttribute('id', 'botButtons');
-        buttonsBox.appendChild(botButtons);
-        // symbols box on the right
-        const symbolsContainer = document.createElement('div');
-        symbolsContainer.setAttribute('id', 'symbolsContainer');
-        botButtons.appendChild(symbolsContainer);
-        // numbers box
-        const numContainer = document.createElement('div');
-        numContainer.setAttribute('id', 'numContainer');
-        botButtons.appendChild(numContainer);
-        // symbols Array
-        const symbolsArray = [ '-', '+', 'enter', '<'];
-        const symbolsArray2 = ['C', '=', '/', '*']
-        // create operator buttons and append to symbols box
-        for(e of symbolsArray){
+
+        const topButtonsBox = document.createElement('div');
+        topButtonsBox.setAttribute('id', 'topButtons');
+        buttonsBox.appendChild(topButtonsBox);
+
+        const botButtonsBox = document.createElement('div');
+        botButtonsBox.setAttribute('id', 'botButtons');
+        buttonsBox.appendChild(botButtonsBox);
+
+        const rightSymbolsBox = document.createElement('div');
+        rightSymbolsBox.setAttribute('id', 'rightSymbolsBox');
+        botButtonsBox.appendChild(rightSymbolsBox);
+
+        const numbersBox = document.createElement('div');
+        numbersBox.setAttribute('id', 'numbersBox');
+        botButtonsBox.appendChild(numbersBox);
+
+        // Arrays of symbols
+        const rightSymbolsArray = [ '-', '+', 'enter', '<'];
+        const topSymbolsArray = ['C', '=', '/', '*']
+
+        // Populating the boxes with buttons
+
+            // Buttons symbols on the right
+        for(e of rightSymbolsArray){
             let symbolButton = document.createElement('button');
             symbolButton.setAttribute('class', 'symbolButtons rightButtons');
             symbolButton.setAttribute('id', `${e}`);
             symbolButton.textContent = `${e}`;
-            symbolsContainer.appendChild(symbolButton);
+            rightSymbolsBox.appendChild(symbolButton);
         }
-
-        for(e of symbolsArray2){
+            // Buttons symbols on top
+        for(e of topSymbolsArray){
             let symbolButton = document.createElement('button');
             symbolButton.setAttribute('class', 'symbolButtons');
             symbolButton.setAttribute('id', `${e}`);
             symbolButton.textContent = `${e}`;
-            symbolsTopContainer.appendChild(symbolButton);
+            topButtonsBox.appendChild(symbolButton);
         }
-
-        // create number buttons and append to numbers box
+            // Number buttons
         for(i = 9; i > 0; i--){
             let numButton = document.createElement('button');
             numButton.setAttribute('class', 'numButtons');
             numButton.setAttribute('id', i);
             numButton.textContent = i;
-            numContainer.appendChild(numButton);
+            numbersBox.appendChild(numButton);
         }
+            // zero button
         let zeroButton = document.createElement('button');
         zeroButton.setAttribute('class', 'numButtons zero');
         zeroButton.setAttribute('id', '0');
         zeroButton.textContent = '0';
+            // decimal button
         let decimalButton = document.createElement('button');
         decimalButton.setAttribute('class', 'numButtons decimal');
         decimalButton.setAttribute('id', '.');
         decimalButton.textContent = '.';
-
-        numContainer.appendChild(decimalButton);
-        numContainer.appendChild(zeroButton);
-
-        // Declare useful variables with initial values
-        let displayValue = [];
-        let firstNum = null;
-        let operator = null;
-        let secondNum = null;
-        let displayIsInfinity = false;
-        let nanMessage = "Woh woh woh! You'r probably trying to multiply Infinity by 0 or divide 0 by 0... " + 
-                         "Those operations are not supported by this calculator!" + "\n" + 
-                         "I will clear the display and you can keep going ;) " + "\n" + 
-                         "Thanks for your understanding :)";
-        let tooLongMessage = "Hey, I understand your enthusiasm but try to keep it under 18 characters hehe ;) ";
-
-        // Reset variables
-        function clear(){
-            displayValue.length = 0;
-            firstNum = null;
-            operator = null;
-            secondNum = null;
-        }
-        function equal(){
-            if (operator === null) return;
-            let oppIndex = displayValue.indexOf(operator);
-            firstNum = displayValue.slice(0, oppIndex).join('');
-            secondNum = displayValue.slice(oppIndex + 1).join('');
-            let result = Math.round((operate(operator[0], +firstNum, +secondNum) + Number.EPSILON) * 1000) / 1000;
-            clear();
-            displayValue.push(result);
-        }
-        function backspace(){
-            if (displayValue.length === 1 && displayValue[0] !== 0){
-                let num = displayValue[0].toString();
-                clear();
-                displayValue.push(Number(num.slice(0, -1)));
-            } else {
-                displayValue = displayValue.slice(0, -1);
-            }
-            if(!displayValue.includes(operator)){
-                operator = null;
-            }
-        };
-        function decimal(){
-            let oppIndex = displayValue.indexOf(operator);
-            if (displayValue.length > 0 && operator === null && (displayValue.includes('.') || displayValue[0].toString().includes('.')) ||
-                operator !== null && displayValue.slice(oppIndex).includes('.')) {
-                return;
-            }
-            displayValue.push('.')
-        }
+        
+        numbersBox.appendChild(decimalButton);
+        numbersBox.appendChild(zeroButton);
 
         // Get all buttons
         let calcButtons = buttonsBox.querySelectorAll('button');
@@ -152,7 +94,7 @@
             button.addEventListener('click', (e) => {
                 button.classList.add('hover');
                 // Deals with 'too' long display value
-                if(displayEl.textContent.length > 16 && button.id !== 'C' && button.id !== '<') {
+                if(displayBox.textContent.length > 16 && button.id !== 'C' && button.id !== '<') {
                     alert(tooLongMessage);
                     return;
                 }
@@ -206,12 +148,12 @@
                         }
                         displayValue.push(button.id);   
                 }
-                displayEl.textContent = displayValue.join('');
+                displayBox.textContent = displayValue.join('');
                 if(displayValue[0] === Infinity && displayValue.length === 1) displayIsInfinity = true;
-                if(displayEl.textContent.includes('NaN')) {
+                if(displayBox.textContent.includes('NaN')) {
                     alert(nanMessage);
                     clear();
-                    displayEl.textContent = '';
+                    displayBox.textContent = '';
                 }
             });
         });
