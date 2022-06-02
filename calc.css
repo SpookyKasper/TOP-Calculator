@@ -4,6 +4,10 @@
     width: 50vh;
     display: flex;
     flex-direction: column;
+    background-color: aliceblue;
+    padding: 5px;
+    border: solid 2px rgb(139, 219, 219);
+    border-radius: 10px;
 }
 
 body {
@@ -16,13 +20,20 @@ body {
 
 button {
     transition: 0.09s;
+    border-radius: 10px;
 }
 
 #display {
+    color: black;
+    background-color: lightblue;
     border-radius: 3px;
     text-align: end;
     padding: 10px;
+    margin: 5px;
     min-height: 80px;
+    display: flex;
+    flex-direction:row-reverse;
+    align-items: center;
 }
 
 #topButtons {
@@ -38,10 +49,12 @@ button {
 
 .symbolButtons:hover {
     background-color: orange;
+    color: white;
 }
 
 .numButtons:hover {
-    background-color: white;
+    background-color: darkcyan;
+    color: white
 }
 
 .hover {
