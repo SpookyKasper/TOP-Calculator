@@ -85,6 +85,8 @@
 
         // Get all buttons
         let calcButtons = buttonsBox.querySelectorAll('button');
+        // Add type 
+        calcButtons.forEach(button => button.type = 'button'); 
         // Remove Hover after transition end
         let removeHover = e => e.target.classList.remove('hover');
         calcButtons.forEach(button => button.addEventListener('transitionend', removeHover));
