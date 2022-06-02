@@ -25,7 +25,7 @@ button {
     min-height: 80px;
 }
 
-#symbolsTop {
+#topButtons {
     display: flex;
 }
 
@@ -49,7 +49,7 @@ button {
     color: white;
 }
 
-#symbolsContainer {
+#rightSymbolsBox {
     display: flex;
     flex-grow: 1;
     flex-direction: column;
@@ -69,7 +69,7 @@ button {
     height: 25%;
 }
 
-#numContainer {
+#numbersBox {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
