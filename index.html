@@ -159,6 +159,7 @@
         });
         // Add keyboard support
         document.addEventListener('keydown', e => {
+            e.preventDefault();
                 switch(e.key){
                     case 'Enter':
                         document.getElementById('enter').click();
